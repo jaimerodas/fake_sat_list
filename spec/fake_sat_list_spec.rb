@@ -45,4 +45,15 @@ RSpec.describe 'fake_sat_list' do
     expect(last_response.content_type).to eq 'application/json'
     expect(JSON.parse(last_response.body)).to be >= 0
   end
+
+  it 'should return a string if the range is too big' do
+    get '/facturas',
+        id: @candidate.id,
+        start: '2017-01-01',
+        finish: '2017-12-31'
+
+    expect(last_response.status).to eq 200
+    expect(last_response.content_type).to eq 'application/json'
+    expect(last_response.body).to eq 'Hay más de 100 resultados'.to_json
+  end
 end
