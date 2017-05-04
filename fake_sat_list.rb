@@ -1,11 +1,30 @@
 # frozen_string_literal: true
 
 require 'sinatra'
+require 'json'
+require './models/candidate'
 
 # This is where the candidates are going to connect to the system. It should
 # return either the number of invoices in the selected period, 'false' in case
 # the period has more than 100 invoices, or 'error' if the parameters are wrong.
 get '/facturas' do
+  content_type :json
+
+  unless params['id'] && params['start'] && params['finish']
+    status 400
+    return 'Te faltan parámetros'.to_json
+  end
+
+  begin
+    result = Candidate.find(params['id']).between(
+      params['start'],
+      params['finish']
+    )
+  rescue ArgumentError
+    status 400
+    result = 'Argumentos inválidos'
+  end
+  return (result || 'Hay más de 100 resultados').to_json
 end
 
 # This we will use to keep track of the candidate id's we give out, and what
