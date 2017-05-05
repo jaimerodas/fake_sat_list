@@ -2,7 +2,7 @@
 
 require 'securerandom'
 require 'date'
-require 'time'
+require 'fileutils'
 
 # This class generates, lists and deletes candidates
 class Candidate
@@ -67,6 +67,8 @@ class Candidate
 
   # This method creates the Candidate file
   def create_file
+    check_if_directory_exists
+
     File.open(path, 'w') do |file|
       facturas.each { |factura| file.puts(factura.to_time) }
     end
@@ -75,6 +77,12 @@ class Candidate
   # This method returns a random Time in 2017
   def create_invoice
     rand(Date.new(2017, 1, 1)..Date.new(2017, 12, 31))
+  end
+
+  # This method checks if the path folder exists. If it doesn't, it creates it
+  def check_if_directory_exists
+    dirname = File.dirname(path)
+    FileUtils.mkdir_p(dirname) unless File.directory?(dirname)
   end
 
   # This method finds and reads a file and turns it into a candidate
