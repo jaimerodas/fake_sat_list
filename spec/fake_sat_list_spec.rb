@@ -68,4 +68,48 @@ RSpec.describe 'fake_sat_list' do
       expect(last_response.body).to include('Ejercicio para Candidatos')
     end
   end
+
+  describe '/candidatos' do
+    before(:all) do
+      10.times { Candidate.new }
+    end
+
+    after(:all) do
+      Candidate.destroy_all
+    end
+
+    it 'should list candidates' do
+      get '/candidatos'
+
+      expect(last_response.status).to eq 200
+      expect(last_response.content_type).to eq 'text/html;charset=utf-8'
+      expect(last_response.body.scan(/Borrar/).length).to be 10
+    end
+
+    it 'should have a link to create a new candidate' do
+      get '/candidatos'
+
+      expect(last_response.status).to eq 200
+      expect(last_response.content_type).to eq 'text/html;charset=utf-8'
+      expect(last_response.body).to include('Crear Candidato')
+    end
+  end
+
+  describe '/candidatos/:id/borrar' do
+    before(:all) do
+      @candidate = Candidate.new
+    end
+
+    after(:all) do
+      Candidate.destroy_all
+    end
+
+    it 'should erase candidates' do
+      get '/candidatos'
+      expect(last_response.body.scan(/Borrar/).length).to be 1
+
+      get "/candidatos/#{@candidate.id}/borrar"
+      expect(last_response.body.scan(/Borrar/).length).to be 0
+    end
+  end
 end

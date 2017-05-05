@@ -72,9 +72,9 @@ RSpec.describe Candidate do
   end
 
   describe '#self.all' do
-    it 'should return an array with one Candidate in the beginning' do
+    it 'should return an array of candidate id strings' do
       expect(Candidate.all.count).to eq 1
-      expect(Candidate.all.first).to be_a Candidate
+      expect(Candidate.all.first).to be_a String
     end
 
     it 'should return more elements when we add more' do

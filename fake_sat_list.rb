@@ -36,15 +36,21 @@ end
 # This we will use to keep track of the candidate id's we give out, and what
 # their answers should be.
 get '/candidatos' do
+  candidatos = Candidate.all
+  erb :candidatos, locals: { candidatos: candidatos }
 end
 
 # This is where we will create a candidate, it should return a UID corresponding
 # to that candidate, and the number of invoices created. They will always
 # belong to the current year.
 post '/candidatos' do
+  Candidate.new
+  redirect to '/candidatos'
 end
 
 # This is how we will delete candidates. No user/password needed for now.
-# It's pretty inconnsequential anyway.
-delete '/candidato/:id' do
+# It's pretty inconsequential anyway.
+get '/candidato/:id/borrar' do
+  Candidate.find(params[:id]).destroy
+  redirect to '/candidatos'
 end

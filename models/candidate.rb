@@ -48,12 +48,14 @@ class Candidate
 
   # This method returns all candidates
   def self.all
-    Dir["#{BASE_PATH}*"].map { |id| find(id.sub(BASE_PATH, '')) }
+    Dir["#{BASE_PATH}*"].map { |id| id.sub(BASE_PATH, '') }
   end
 
   # This method destroys all candidates
   def self.destroy_all
-    all.each(&:destroy)
+    all.each do |id|
+      Candidate.find(id).destroy
+    end
   end
 
   private

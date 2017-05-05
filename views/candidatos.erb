@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Administración de Candidatos</title>
+    <style media="screen">
+      html, body {
+        height: 100%;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: #1C3154;
+        font: 16px/1.4 "Helvetica Neue", Arial, Helvetica, sans-serif;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      article {
+        background-color: white;
+        margin: 0 auto;
+        padding: 2em;
+        width: 100%;
+        max-width: 32em;
+        border-radius: 0.2em;
+      }
+
+      h1 {
+        margin: 0 0 0.5em;
+      }
+
+      a {
+        color: #1C3154;
+        font-weight: bold;
+      }
+
+      a:hover {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <article class="">
+      <% if candidatos.empty? %>
+      <h1>No hay candidatos actualmente</h1>
+      <% else %>
+      <h1><%= candidatos.count %> Candidato(s)</h1>
+      <ul>
+        <% candidatos.each do |candidato| %>
+        <li>
+          <%= candidato %>
+          <a href="/candidato/<%= candidato %>/borrar">Borrar</a>
+        </li>
+        <% end %>
+      </ul>
+      <% end %>
+
+      <form action="/candidatos" method="post">
+        <button type="submit">Crear Candidato</button>
+      </form>
+    </article>
+  </body>
+</html>
