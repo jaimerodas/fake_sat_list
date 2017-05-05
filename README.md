@@ -15,4 +15,4 @@ y corres en modo development con:
 ruby fake_sat_list.rb
 ```
 
-ahora accesa a (localhost:4567)[http://localhost:4567]
+ahora accesa a [localhost:4567](http://localhost:4567)
