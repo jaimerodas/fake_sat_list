@@ -27,6 +27,12 @@ get '/facturas' do
   return (result || 'Hay más de 100 resultados').to_json
 end
 
+# This is the main page, we will use it to give a brief description of the
+# problem and how it should be approached.
+get '/' do
+  erb :index
+end
+
 # This we will use to keep track of the candidate id's we give out, and what
 # their answers should be.
 get '/candidatos' do
