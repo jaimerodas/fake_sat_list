@@ -8,9 +8,9 @@ require 'fileutils'
 class Candidate
   BASE_PATH = 'candidates/'
 
-  # With an optional number of elements, this creates a Candidate
-  def initialize(id = false)
-    id ? find_file(id) : create_file
+  # This method creates the candidate object. Either from a file or from scratch
+  def initialize(*id)
+    id.empty? ? create_file : initialize_from_file(id.first)
   end
 
   # This method deletes a candidate
@@ -28,11 +28,8 @@ class Candidate
     @id ||= SecureRandom.uuid
   end
 
-  # This method returns the array of Times
-  def facturas
-    @facturas ||= Array.new(count) { create_invoice }
-  end
-
+  # This method returns the number of facturas between two dates, as long as
+  # the number is less than or equal to 100. Otherwise, it returns false
   def between(start, finish)
     range = Date.parse(start)..Date.parse(finish)
     result = facturas.select { |date| range.cover? date }.count
@@ -58,6 +55,11 @@ class Candidate
     end
   end
 
+  # This method returns the array of Times
+  def facturas
+    @facturas ||= Array.new(count) { create_invoice }
+  end
+
   private
 
   # This method returns the path where the Candidate file is stored
@@ -65,12 +67,21 @@ class Candidate
     @path ||= "#{BASE_PATH}#{id}"
   end
 
-  # This method creates the Candidate file
+  # This method makes sure the directory exists and creates the file
   def create_file
     check_if_directory_exists
+    File.open(path, 'w') { |file| add_facturas_to(file) }
+  end
 
-    File.open(path, 'w') do |file|
-      facturas.each { |factura| file.puts(factura.to_time) }
+  # This method adds the dates from facturas to a file
+  def add_facturas_to(file)
+    facturas.each { |factura| file.puts(factura.to_time) }
+  end
+
+  # This method reads the dates from a previously generated file
+  def read_facturas_from_file
+    File.open(path, 'r').read.split("\n").map do |row|
+      Date.parse(row)
     end
   end
 
@@ -86,9 +97,9 @@ class Candidate
   end
 
   # This method finds and reads a file and turns it into a candidate
-  def find_file(id)
+  def initialize_from_file(id)
     @id = id
-    @facturas = File.open(path, 'r').read.split("\n").map { |t| Date.parse(t) }
+    @facturas = read_facturas_from_file
     @count = @facturas.count
   end
 end

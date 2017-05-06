@@ -30,7 +30,7 @@ RSpec.describe Candidate do
     end
 
     it 'should have as many facturas as we said it should' do
-      expect(@candidate.facturas.count).to eq(@candidate.count)
+      expect(@candidate.facturas.count).to eq(@count)
     end
   end
 
