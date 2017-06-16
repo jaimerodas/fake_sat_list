@@ -16,3 +16,11 @@ ruby fake_sat_list.rb
 ```
 
 ahora accesa a [localhost:4567](http://localhost:4567)
+
+Para correrlo en modo producción, checa la configuración en [/config/puma.rb](/config/puma.rb) y lo corres con 
+
+```bash
+puma -e production
+```
+
+Yo lo tengo así y puse un nginx en frente. Hasta ahora ha jalado bien.
