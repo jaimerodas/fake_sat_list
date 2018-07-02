@@ -48,6 +48,10 @@ post '/candidatos' do
   redirect to '/candidatos'
 end
 
+get '/candidato/:id' do
+  Candidate.find(params[:id]).count.to_json
+end
+
 # This is how we will delete candidates. No user/password needed for now.
 # It's pretty inconsequential anyway.
 get '/candidato/:id/borrar' do
