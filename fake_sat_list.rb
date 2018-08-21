@@ -7,7 +7,7 @@ require './models/candidate'
 # This is where the candidates are going to connect to the system. It should
 # return either the number of invoices in the selected period, 'false' in case
 # the period has more than 100 invoices, or 'error' if the parameters are wrong.
-get '/facturas' do
+get /\/facturas\/?/ do
   content_type :json
 
   unless params['id'] && params['start'] && params['finish']
